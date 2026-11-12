@@ -1,0 +1,20 @@
+{
+  "name": "pwnctual: The Computer's Language",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "../.."
+  },
+  "remoteUser": "vscode",
+  "containerUser": "vscode",
+  "updateRemoteUserUID": false,
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "workbench.startupEditor": "none",
+        "workbench.activityBar.location": "hidden",
+        "workbench.sideBar.visible": false,
+        "terminal.integrated.defaultLocation": "editor"
+      }
+    }
+  }
+}

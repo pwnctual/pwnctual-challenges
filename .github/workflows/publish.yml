@@ -1,9 +1,10 @@
-name: Publish the-computers-language
+name: Publish challenges
 
 on:
   push:
     paths:
       - "the-computers-language/**"
+      - "the-computers-language-part-2/**"
       - ".github/workflows/publish.yml"
   workflow_dispatch:
 
@@ -14,6 +15,11 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        challenge:
+          - the-computers-language
+          - the-computers-language-part-2
     steps:
       - uses: actions/checkout@v4
       - uses: docker/login-action@v3
@@ -23,8 +29,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: docker/build-push-action@v6
         with:
-          context: the-computers-language
+          context: ${{ matrix.challenge }}
           platforms: linux/amd64
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/the-computers-language:latest
+          tags: ghcr.io/${{ github.repository_owner }}/${{ matrix.challenge }}:latest
           labels: org.opencontainers.image.source=https://github.com/${{ github.repository }}

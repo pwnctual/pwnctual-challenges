@@ -33,7 +33,10 @@ int main(void)
         }
         char *end;
         long answer = strtol(line, &end, 10);
-        if (end == line || (*end != '\n' && *end != '\0') || answer != (long)n) {
+        while (*end == ' ' || *end == '\t' || *end == '\r' || *end == '\n') {
+            end++;
+        }
+        if (end == line || *end != '\0' || answer != (long)n) {
             puts("Wrong.");
             return 1;
         }
@@ -45,7 +48,8 @@ int main(void)
     }
     char buf[128];
     if (fgets(buf, sizeof buf, flag)) {
-        fputs(buf, stdout);
+        buf[strcspn(buf, "\n")] = '\0';
+        puts(buf);
     }
     fclose(flag);
     return 0;

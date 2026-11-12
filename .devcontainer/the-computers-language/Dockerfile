@@ -17,6 +17,7 @@ RUN mkdir /challenge \
     && chmod 400 /flag
 
 # The reader gets a normal user without sudo
-RUN apt-get purge -y sudo \
+# sudo refuses to uninstall while root has no password unless forced
+RUN SUDO_FORCE_REMOVE=yes apt-get purge -y sudo \
     && rm -rf /etc/sudoers /etc/sudoers.d \
     && (deluser vscode sudo || true)

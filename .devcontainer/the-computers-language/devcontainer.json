@@ -2,7 +2,7 @@
   "name": "pwnctual: The Computer's Language",
   "build": {
     "dockerfile": "Dockerfile",
-    "context": "../.."
+    "context": "."
   },
   "remoteUser": "vscode",
   "containerUser": "vscode",

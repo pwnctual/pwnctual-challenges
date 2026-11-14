@@ -5,6 +5,7 @@ on:
     paths:
       - "reading-the-computers-language/**"
       - "writing-the-computers-language/**"
+      - "c-syntax/**"
       - ".github/workflows/publish.yml"
   workflow_dispatch:
 
@@ -20,6 +21,7 @@ jobs:
         challenge:
           - reading-the-computers-language
           - writing-the-computers-language
+          - c-syntax
     steps:
       - uses: actions/checkout@v4
       - uses: docker/login-action@v3

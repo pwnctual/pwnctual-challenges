@@ -7,7 +7,8 @@ RUN chmod 755 /challenge \
     && echo cHduY3R1YWx7NjVhMjQ2NjQ1NGZmZDA2YX0= | base64 -d > /flag \
     && chown root:root /flag \
     && chmod 400 /flag \
-    && useradd -m -s /bin/bash hacker
+    && useradd -m -s /bin/bash hacker \
+    && ln -s /challenge/run /home/hacker/run
 
 USER hacker
 WORKDIR /home/hacker

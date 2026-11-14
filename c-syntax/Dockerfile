@@ -13,7 +13,8 @@ RUN chmod 755 /challenge \
     && chmod 400 /flag \
     && mkdir -p /var/lib/pwnctual \
     && chmod 700 /var/lib/pwnctual \
-    && useradd -m -s /bin/bash hacker
+    && useradd -m -s /bin/bash hacker \
+    && ln -s /challenge/run /home/hacker/run
 
 USER hacker
 WORKDIR /home/hacker

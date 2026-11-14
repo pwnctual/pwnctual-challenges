@@ -1,7 +1,7 @@
 FROM debian:bookworm-slim
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends gcc libc6-dev nano \
+    && apt-get install -y --no-install-recommends gcc libc6-dev make nano \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --chown=root:root challenge /challenge

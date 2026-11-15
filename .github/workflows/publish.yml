@@ -7,6 +7,7 @@ on:
       - "writing-the-computers-language/**"
       - "c-syntax/**"
       - "compiling/**"
+      - "functions/**"
       - ".github/workflows/publish.yml"
   workflow_dispatch:
 
@@ -24,6 +25,7 @@ jobs:
           - writing-the-computers-language
           - c-syntax
           - compiling
+          - functions
     steps:
       - uses: actions/checkout@v4
       - uses: docker/login-action@v3

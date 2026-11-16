@@ -8,6 +8,7 @@ on:
       - "c-syntax/**"
       - "compiling/**"
       - "functions/**"
+      - "variables/**"
       - ".github/workflows/publish.yml"
   workflow_dispatch:
 
@@ -26,6 +27,7 @@ jobs:
           - c-syntax
           - compiling
           - functions
+          - variables
     steps:
       - uses: actions/checkout@v4
       - uses: docker/login-action@v3

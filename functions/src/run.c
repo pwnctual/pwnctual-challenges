@@ -198,6 +198,28 @@ static int count(const char *text, const char *word)
     return n;
 }
 
+/* Copies text without spaces, tabs or newlines, so int age=25; and int age = 25; look the same */
+static void squash(const char *text, char *out, size_t size)
+{
+    size_t n = 0;
+    for (; *text && n < size - 1; text++) {
+        if (*text != ' ' && *text != '\t' && *text != '\n' && *text != '\r') {
+            out[n++] = *text;
+        }
+    }
+    out[n] = '\0';
+}
+
+/* Whether the source has this text, however it's spaced out */
+static int has(const char *src, const char *text)
+{
+    static char s[16384];
+    char t[256];
+    squash(src, s, sizeof s);
+    squash(text, t, sizeof t);
+    return strstr(s, t) != NULL;
+}
+
 static int builds(void)
 {
     pid_t pid = fork();
@@ -304,7 +326,7 @@ int main(void)
         return 1;
     }
     for (int i = 0; l->needs[i]; i++) {
-        if (!strstr(src, l->needs[i])) {
+        if (!has(src, l->needs[i])) {
             printf("Level %d: it prints %s, but hello.c should still have %s\n", level, l->output, l->needs[i]);
             return 1;
         }

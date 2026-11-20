@@ -92,7 +92,8 @@ static const struct level levels[LEVELS] = {
     },
     {
         "letter holds 'A', and the program prints A.\n"
-        "Without changing letter, make it print: 65",
+        "Without changing letter, make it print: 65\n"
+        "(Hint: a char is stored as its ASCII value, and 'A' is 65.)",
         "#include <stdio.h>\n"
         "\n"
         "int main() {\n"

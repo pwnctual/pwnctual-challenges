@@ -57,7 +57,8 @@ static const struct level levels[LEVELS] = {
     },
     {
         "Turn seconds into hours, minutes and seconds.\n"
-        "For 3725 seconds, print: 1h 2m 5s",
+        "For 3725 seconds, print: 1h 2m 5s\n"
+        "(Hint: there are 3600 seconds in an hour, and you can use printf more than once.)",
         "#include <stdio.h>\n"
         "\n"
         "int main() {\n"
@@ -69,7 +70,8 @@ static const struct level levels[LEVELS] = {
     },
     {
         "Reverse the digits of a 3-digit number, using only math.\n"
-        "For 472, print: 274   (and for 100, print: 1)",
+        "For 472, print: 274   (and for 100, print: 1)\n"
+        "(Hint: n % 10 gives you the last digit, and n / 10 throws the last digit away.)",
         "#include <stdio.h>\n"
         "\n"
         "int main() {\n"
@@ -100,7 +102,8 @@ static const struct level levels[LEVELS] = {
         "a few places down the alphabet, wrapping from z back to a.\n"
         "Shift letter (a lowercase letter) by key places and print the new letter.\n"
         "For 'x' with key 3, print: a\n"
-        "(Remember: a char is just a number, its ASCII value.)",
+        "(Hint: a char is just a number, its ASCII value. 'a' is a number too,\n"
+        "so letter - 'a' tells you how far letter is from a: 0 for a, 1 for b, and so on.)",
         "#include <stdio.h>\n"
         "\n"
         "int main() {\n"

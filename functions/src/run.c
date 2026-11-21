@@ -8,7 +8,7 @@
 
 /* Each level hands out hello.c and a task. The learner edits hello.c until it prints
    the right thing, using functions the way the Functions lesson teaches. */
-#define LEVELS 5
+#define LEVELS 7
 
 struct level {
     const char *task;   /* shown to the learner */
@@ -34,7 +34,7 @@ static const struct level levels[LEVELS] = {
         "Make the program print: hello",
         "#include <stdio.h>\n"
         "\n"
-        "int hello() {\n"
+        "void hello() {\n"
         "    printf(\"hello\");\n"
         "}\n"
         "\n"
@@ -47,7 +47,7 @@ static const struct level levels[LEVELS] = {
         "Make it print: hello",
         "#include <stdio.h>\n"
         "\n"
-        "int hello() {\n"
+        "void hello() {\n"
         "    printf(\"hello\");\n"
         "}\n",
         "hello", 1, {"hello();", "printf(\"hello\")", NULL},
@@ -68,7 +68,7 @@ static const struct level levels[LEVELS] = {
         "But you can't add another printf.",
         "#include <stdio.h>\n"
         "\n"
-        "int hello() {\n"
+        "void hello() {\n"
         "    printf(\"hello\");\n"
         "}\n"
         "\n"
@@ -76,6 +76,33 @@ static const struct level levels[LEVELS] = {
         "    hello();\n"
         "}\n",
         "hellohello", 1, {"hello();", "printf(\"hello\")", NULL},
+    },
+    {
+        "main uses a function called square, but it doesn't exist yet.\n"
+        "Write square: it takes a number and gives back that number times itself.\n"
+        "The program should print 9, 25 and 144, one on each line.",
+        "#include <stdio.h>\n"
+        "\n"
+        "int main() {\n"
+        "    printf(\"%d\\n\", square(3));\n"
+        "    printf(\"%d\\n\", square(5));\n"
+        "    printf(\"%d\\n\", square(12));\n"
+        "}\n",
+        "9\n25\n144", 0, {"return", "square(12)", NULL},
+    },
+    {
+        "hello is written below main, so C has never heard of it when main calls it.\n"
+        "Without moving hello, make the program compile and print: hello",
+        "#include <stdio.h>\n"
+        "\n"
+        "int main() {\n"
+        "    hello();\n"
+        "}\n"
+        "\n"
+        "void hello() {\n"
+        "    printf(\"hello\");\n"
+        "}\n",
+        "hello", 1, {"hello();", "printf(\"hello\")", NULL},
     },
 };
 
@@ -220,6 +247,16 @@ static int has(const char *src, const char *text)
     return strstr(s, t) != NULL;
 }
 
+/* Level 7: the body of hello (hello() followed by {) comes after main starts */
+static int below_main(const char *src)
+{
+    static char s[16384];
+    squash(src, s, sizeof s);
+    const char *m = strstr(s, "intmain(");
+    const char *b = strstr(s, "hello(){");
+    return m && b && b > m;
+}
+
 static int builds(void)
 {
     pid_t pid = fork();
@@ -229,7 +266,7 @@ static int builds(void)
             _exit(1);
         }
         unlink(BUILT);
-        execlp("gcc", "gcc", "hello.c", "-o", BUILT, (char *)NULL);
+        execlp("gcc", "gcc", "-Werror=implicit-function-declaration", "hello.c", "-o", BUILT, (char *)NULL);
         _exit(1);
     }
     return pid > 0 && wait_ok(pid);
@@ -320,6 +357,11 @@ int main(void)
         printf("Level %d: hello.c runs, but it doesn't print %s\n", level, l->output);
         return 1;
     }
+    if (level == 6 && has(src, "if(")) {
+        printf("Level %d: it prints the right numbers, but square should work for any number,\n", level);
+        printf("not just 3, 5 and 12. Use return with some math, no if.\n");
+        return 1;
+    }
     if (l->one_printf && count(src, "printf") != 1) {
         printf("Level %d: it prints %s, but hello.c should only have one printf.\n", level, l->output);
         printf("Let the hello function do the printing.\n");
@@ -330,6 +372,12 @@ int main(void)
             printf("Level %d: it prints %s, but hello.c should still have %s\n", level, l->output, l->needs[i]);
             return 1;
         }
+    }
+
+    if (level == 7 && !below_main(src)) {
+        printf("Level %d: it prints hello, but hello should stay below main.\n", level);
+        printf("Tell C about hello before main instead (a declaration).\n");
+        return 1;
     }
 
     printf("Level %d done!\n\n", level);

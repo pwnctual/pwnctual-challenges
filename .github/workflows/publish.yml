@@ -12,6 +12,7 @@ on:
       - "conditionals/**"
       - "loops/**"
       - "math/**"
+      - "checkpoint-1/**"
       - ".github/workflows/publish.yml"
   workflow_dispatch:
 
@@ -34,6 +35,7 @@ jobs:
           - conditionals
           - loops
           - math
+          - checkpoint-1
     steps:
       - uses: actions/checkout@v4
       - uses: docker/login-action@v3
